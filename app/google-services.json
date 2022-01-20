@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "172816834794",
+    "firebase_url": "https://greetingcards-42e76-default-rtdb.firebaseio.com",
+    "project_id": "greetingcards-42e76",
+    "storage_bucket": "greetingcards-42e76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172816834794:android:82c7934952d02716b9f793",
+        "android_client_info": {
+          "package_name": "com.example.greetingcards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172816834794-n9n9h8hb7vj45nt4dtktf2fuc78dmrcc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgE45XzWHqv6DV0c97Xq6mv5YV0qKn3Yk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172816834794-n9n9h8hb7vj45nt4dtktf2fuc78dmrcc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

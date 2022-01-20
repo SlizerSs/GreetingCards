@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/activity_login.xml" value="0.4" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/activity_main.xml" value="0.17300724637681159" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/activity_registration.xml" value="0.4" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/app_bar_main.xml" value="0.24365942028985507" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/content_main.xml" value="0.16" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/fragment_addCard.xml" value="0.17300724637681159" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/fragment_gallery.xml" value="0.25226449275362317" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/fragment_home.xml" value="0.15942028985507245" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/fragment_slideshow.xml" value="0.4" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/list_item.xml" value="0.264" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/nav_header_main.xml" value="0.17300724637681159" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/send_list_item.xml" value="0.25226449275362317" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/menu/activity_main_drawer.xml" value="0.20677083333333332" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/menu/main.xml" value="0.20677083333333332" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/menu/options_menu.xml" value="0.17760416666666667" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
