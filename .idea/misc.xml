@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/drawable/ic_launcher_background.xml" value="0.18333333333333332" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/activity_login.xml" value="0.4" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/activity_main.xml" value="0.17300724637681159" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/layout/activity_registration.xml" value="0.4" />
@@ -18,6 +19,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/menu/activity_main_drawer.xml" value="0.20677083333333332" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/menu/main.xml" value="0.20677083333333332" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/menu/options_menu.xml" value="0.17760416666666667" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/GreetingCards/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
       </map>
     </option>
   </component>

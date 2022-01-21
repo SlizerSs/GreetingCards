@@ -26,7 +26,6 @@ import java.util.concurrent.ExecutionException;
 
 public class MyCardsFragment extends Fragment {
 
-    private MyCardsViewModel homeViewModel;
     private FragmentHomeBinding binding;
 
     private DatabaseReference mDataBaseCard;
@@ -35,8 +34,6 @@ public class MyCardsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(MyCardsViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

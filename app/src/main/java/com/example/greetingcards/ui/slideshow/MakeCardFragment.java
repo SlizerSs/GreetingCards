@@ -54,7 +54,6 @@ import java.util.List;
 
 public class MakeCardFragment extends Fragment implements ColorPickerDialogListener {
     final int REQUEST_CODE_GALLERY = 999;
-    private MakeCardViewModel slideshowViewModel;
     private FragmentSlideshowBinding binding;
     Button colorButton;
     //Button textButton;
@@ -75,8 +74,6 @@ public class MakeCardFragment extends Fragment implements ColorPickerDialogListe
     public List<Card> mainCardList = new ArrayList<>();
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                new ViewModelProvider(this).get(MakeCardViewModel.class);
 
         binding = FragmentSlideshowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

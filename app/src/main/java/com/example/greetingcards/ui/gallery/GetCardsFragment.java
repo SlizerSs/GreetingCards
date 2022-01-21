@@ -28,7 +28,6 @@ import java.util.concurrent.ExecutionException;
 
 public class GetCardsFragment extends Fragment {
 
-    private GetCardsViewModel galleryViewModel;
     private FragmentGalleryBinding binding;
 
     private DatabaseReference mDataBaseSendCard;
@@ -40,8 +39,6 @@ public class GetCardsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                new ViewModelProvider(this).get(GetCardsViewModel.class);
 
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
