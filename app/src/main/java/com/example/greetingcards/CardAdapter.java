@@ -56,6 +56,20 @@ public class CardAdapter  extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
                 activity.sendCard(card,login);
             }
         });
+        holder.sendEmailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity activity = (MainActivity)context1;
+                activity.sendEmailCard(card);
+            }
+        });
+        /*holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity activity = (MainActivity)context1;
+                activity.deleteButton(card);
+            }
+        });*/
     }
     public final static Bitmap stringToBitmap(String in){
         byte[] bytes = Base64.decode(in, Base64.DEFAULT);
@@ -70,11 +84,15 @@ public class CardAdapter  extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
         final ImageView imageView;
         final Button sendButton;
         final EditText loginEditText;
+        final Button sendEmailButton;
+        //final Button deleteButton;
         ViewHolder(View view){
             super(view);
             sendButton = view.findViewById(R.id.sendButton);
             imageView = view.findViewById(R.id.card_imageview);
             loginEditText = view.findViewById(R.id.login);
+            sendEmailButton = view.findViewById(R.id.sendEmailButton);
+            //deleteButton = view.findViewById(R.id.deleteButton);
         }
 
     }

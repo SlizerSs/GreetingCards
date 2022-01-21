@@ -183,7 +183,7 @@ public class MakeCardFragment extends Fragment implements ColorPickerDialogListe
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+
     }
     private void setText(int x, int y){
         text = cardEditText.getText().toString();

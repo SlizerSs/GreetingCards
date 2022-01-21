@@ -9,8 +9,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -38,11 +42,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -61,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
     private String SEND_CARD_KEY = "SEND_CARD";
     public List<SendCard> mainSendCardList = new ArrayList<>();
 
+    private DatabaseReference mDataBaseCard;
     NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
         getUsersFromDB();
         mDataBaseSendCard = FirebaseDatabase.getInstance().getReference(SEND_CARD_KEY);
         getSendCardsFromDB();
+
 
         setSupportActionBar(binding.appBarMain.toolbar);
         /*binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +186,35 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
                         Toast.LENGTH_LONG).show();
             }
         }
+    }
+    public void sendEmailCard(Card card){
+        MainActivity mainActivity = this;
+        try {
+            // converting drawable object to Bitmap to store in content providers of Media
+            Bitmap bitmap = stringToBitmap(card.getBitmap());
+            // Store image in Devise database to send image to mail
+            String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,"title", null);
+            Uri screenshotUri = Uri.parse(path);
+            final Intent emailIntent1 = new Intent(android.content.Intent.ACTION_SEND);
+            emailIntent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            emailIntent1.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+            emailIntent1.setType("image/png");
+            startActivity(Intent.createChooser(emailIntent1, "Send email using"));
 
+        }
+        catch(Exception e) { }
+    }
+    /*public void deleteButton(Card card){
+        MainActivity mainActivity = this;
+        try {
+            mDataBaseCard = FirebaseDatabase.getInstance().getReference();
+            mDataBaseCard.child("CARDS").child(card.getKey()).setValue(null);
+        }
+        catch(Exception e) { }
+    }*/
+    public final static Bitmap stringToBitmap(String in){
+        byte[] bytes = Base64.decode(in, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
