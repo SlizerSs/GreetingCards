@@ -20,10 +20,7 @@ import android.widget.Toast;
 import com.example.greetingcards.Models.Card;
 import com.example.greetingcards.Models.SendCard;
 import com.example.greetingcards.Models.User;
-import com.example.greetingcards.ViewModels.SendCardViewModel;
-import com.example.greetingcards.ViewModels.UserViewModel;
 import com.example.greetingcards.ui.slideshow.MakeCardFragment;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -36,6 +33,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.greetingcards.databinding.ActivityMainBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 
 import java.io.FileNotFoundException;
@@ -50,21 +52,36 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
-    public String id;
+    public String authLogin;
 
+    private DatabaseReference mDataBaseUser;
+    private String USER_KEY = "USER";
+    public List<User> mainUserList = new ArrayList<>();
+    private DatabaseReference mDataBaseSendCard;
+    private String SEND_CARD_KEY = "SEND_CARD";
+    public List<SendCard> mainSendCardList = new ArrayList<>();
+
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
-            id= null;
+            authLogin = null;
         } else {
-            id = extras.getString("id1");
+            authLogin = extras.getString("id1");
         }
+
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        mDataBaseUser = FirebaseDatabase.getInstance().getReference(USER_KEY);
+        getUsersFromDB();
+        mDataBaseSendCard = FirebaseDatabase.getInstance().getReference(SEND_CARD_KEY);
+        getSendCardsFromDB();
 
         setSupportActionBar(binding.appBarMain.toolbar);
         /*binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
             }
         });*/
         DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
+        navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -86,48 +103,74 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        List<User> users = new ArrayList<>();
-        User user = new User();
-        try {
-            users = userViewModel.allUsers();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        for (User u:users) {
-            if(u.getID().toString().equals(id)){
-                user = u;
+
+
+    }
+    private void getUsersFromDB() {
+
+        ValueEventListener VListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (mainUserList.size()>0)
+                    mainUserList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    User user = ds.getValue(User.class);
+                    if (user != null)
+                        mainUserList.add(user);
+                }
+                User user = new User();
+                for (User u:mainUserList) {
+                    if(u.getLogin().equals(authLogin)){
+                        user = u;
+                    }
+                }
+
+                View headerView = navigationView.getHeaderView(0);
+                TextView navUsername = (TextView) headerView.findViewById(R.id.textViewUserName);
+                navUsername.setText(user.getName());
+                TextView navMail = (TextView) headerView.findViewById(R.id.textViewMail);
+                navMail.setText(user.getEmail());
             }
-        }
 
-        View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.textViewUserName);
-        navUsername.setText(user.getName());
-        TextView navMail = (TextView) headerView.findViewById(R.id.textViewMail);
-        navMail.setText(user.getEmail());
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        };
+        mDataBaseUser.addValueEventListener(VListener);
+    }
+    private void getSendCardsFromDB() {
+
+        ValueEventListener VListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (mainSendCardList.size()>0)
+                    mainSendCardList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    SendCard sendCard = ds.getValue(SendCard.class);
+                    if (sendCard != null)
+                        mainSendCardList.add(sendCard);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        mDataBaseSendCard.addValueEventListener(VListener);
     }
     public void sendCard(Card card, String login){
         MainActivity mainActivity = this;
-        UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        List<User> users = new ArrayList<>();
-        try {
-            users = userViewModel.allUsers();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        for (User u:users) {
+
+        for (User u:mainUserList) {
             if(u.getLogin().equals(login)){
-                SendCardViewModel mSendCardViewModel = new ViewModelProvider(this).get(SendCardViewModel.class);
+
                 SendCard sendCard = new SendCard();
-                sendCard.setCardID(card.getID().toString());
+                sendCard.setCardID(card.getKey());
                 sendCard.setFromID(card.getCreatorID());
-                sendCard.setToID(u.getID().toString());
-                mSendCardViewModel.insert(sendCard);
+                sendCard.setToID(u.getLogin());
+                mDataBaseSendCard.push().setValue(sendCard);
                 Toast.makeText(
                         this.getApplicationContext(),
                         "Отправлено",

@@ -20,9 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.greetingcards.Models.Card;
 import com.example.greetingcards.Models.User;
-import com.example.greetingcards.ViewModels.CardViewModel;
-import com.example.greetingcards.ViewModels.SendCardViewModel;
-import com.example.greetingcards.ViewModels.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

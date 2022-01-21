@@ -1,23 +1,10 @@
 package com.example.greetingcards.Models;
 
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity(tableName = "card_table")
 public class Card {
-    @PrimaryKey(autoGenerate = true)
-    @NonNull
-    @ColumnInfo(name = "_id")
-    private Integer mID;
 
-    @NonNull
-    @ColumnInfo(name = "creator_userID")
+    private String mID;
+    private String mKey;
     private String mCreatorID;
-
-    @NonNull
-    @ColumnInfo(name = "bitmap")
     private String mBitmap;
 
 
@@ -25,10 +12,12 @@ public class Card {
 
     }
 
-    public void setID(@NonNull Integer id) {this.mID = id;}
-    public Integer getID(){return this.mID;}
-    public void setCreatorID(@NonNull String creatorID) {this.mCreatorID = creatorID;}
+    public void setID(String id) {this.mID = id;}
+    public String getID(){return this.mID;}
+    public void setKey(String key) {this.mKey = key;}
+    public String getKey(){return this.mKey;}
+    public void setCreatorID(String creatorID) {this.mCreatorID = creatorID;}
     public String getCreatorID(){return this.mCreatorID;}
-    public void setBitmap(@NonNull String bitmap) {this.mBitmap = bitmap;}
+    public void setBitmap(String bitmap) {this.mBitmap = bitmap;}
     public String getBitmap(){return this.mBitmap;}
 }

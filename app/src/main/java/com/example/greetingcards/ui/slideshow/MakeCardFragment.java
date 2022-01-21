@@ -26,9 +26,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.greetingcards.MainActivity;
 import com.example.greetingcards.Models.Card;
 import com.example.greetingcards.R;
-import com.example.greetingcards.ViewModels.CardViewModel;
 import com.example.greetingcards.databinding.FragmentSlideshowBinding;
 import com.google.android.material.slider.RangeSlider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.jaredrummler.android.colorpicker.ColorShape;
@@ -44,6 +48,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MakeCardFragment extends Fragment implements ColorPickerDialogListener {
@@ -57,12 +63,16 @@ public class MakeCardFragment extends Fragment implements ColorPickerDialogListe
     ImageView cardImageView;
     Bitmap savedBitmap;
     EditText cardEditText;
-    CardViewModel mCardViewModel;
+
     RangeSlider rangeSlider;
     RangeSlider rangeSlider2;
     String text = null;
     int globalX = 10;
     int globalY = 50;
+
+    private DatabaseReference mDataBaseCard;
+    private String CARD_KEY = "CARD";
+    public List<Card> mainCardList = new ArrayList<>();
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         slideshowViewModel =
@@ -70,7 +80,8 @@ public class MakeCardFragment extends Fragment implements ColorPickerDialogListe
 
         binding = FragmentSlideshowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        mDataBaseCard = FirebaseDatabase.getInstance().getReference(CARD_KEY);
+        getCardsFromDB();
         cardEditText = binding.cardEditText;
         colorButton = binding.firstButton;
         galleryButton = binding.secondButton;
@@ -124,12 +135,16 @@ public class MakeCardFragment extends Fragment implements ColorPickerDialogListe
             @Override
             public void onClick(View v) {
                 Bitmap bitmap = saveImageToGallery();
-                mCardViewModel = new ViewModelProvider(getActivity()).get(CardViewModel.class);
+
                 MainActivity mainActivity = (MainActivity) getActivity();
                 Card card = new Card();
-                card.setCreatorID(mainActivity.id);
+                card.setCreatorID(mainActivity.authLogin);
                 card.setBitmap(bitmapToString(bitmap));
-                mCardViewModel.insert(card);
+                DatabaseReference myRef = mDataBaseCard.push();
+                String key = myRef.getKey();
+                card.setKey(key);
+
+                mDataBaseCard.push().setValue(card);
                 Toast.makeText(
                         getActivity().getApplicationContext(),
                         "Успешно сохранено",
@@ -138,6 +153,27 @@ public class MakeCardFragment extends Fragment implements ColorPickerDialogListe
         });
 
         return root;
+    }
+    private void getCardsFromDB() {
+
+        ValueEventListener VListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (mainCardList.size()>0)
+                    mainCardList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    Card card = ds.getValue(Card.class);
+                    if (card != null)
+                        mainCardList.add(card);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        mDataBaseCard.addValueEventListener(VListener);
     }
     public final static String bitmapToString(Bitmap in){
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
